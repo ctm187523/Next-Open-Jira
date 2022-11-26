@@ -1,3 +1,4 @@
+import { Elevator } from "@mui/icons-material";
 import { createTheme } from "@mui/material";
 import { red } from '@mui/material/colors';
 
@@ -8,13 +9,26 @@ export const darkTheme = createTheme({
         secondary: {
             main: '#19857b'
         },
-        error:{
+        error: {
             main: red.A400
         },
-      },
-  
-      components: {
-          
-      }
-  });
-  
+    },
+
+    //estilos para componentes
+    components: {
+        //cambiamos el estilo del Appbar de ui/Navbar para usar compontes ponemos
+        //MuiNombreComponete en este caso como usamos el AppBar MuiAppBar
+        MuiAppBar: {
+            defaultProps: {
+                //con elevation : 0 le quitamos la sombra del Navbar
+                elevation: 0
+            },
+            styleOverrides: {
+                root: {
+                    backgroundColor: '#4a148c',
+                    
+                }
+            }
+        }
+    }
+});
