@@ -26,6 +26,10 @@ export const SideBar = () => {
                 <Box sx={{ padding: '5px 10px' }}>
                     <Typography variant="h4"> Menu </Typography>
                 </Box>
+
+                {/* crea una linea divisoria en el menu */}
+                <Divider />
+                
                 <List>
                     {/* usamos la lista menuItems creada arriba */}
                     {

@@ -6,7 +6,9 @@ interface Props {
     children: ReactElement | ReactElement[];
 }
 
-//creamos una interfaz para el tipado de las propiedades a compartir
+//creamos una interfaz para el tipado de las propiedades a compartir, lo
+//usamos para tipar el estado inicial y en el ./uiReducers para tipar el state
+//y el return 
 export interface UIState {
     sidemenuOpen: boolean;
 }
