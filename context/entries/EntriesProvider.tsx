@@ -24,19 +24,19 @@ const Entries_INITIAL_STATE: EntriesState = {
     entries: [
         {
             _id: uuidv4(),//usamos la importacion de uuid de arriba linea 5 para usar id unicos
-            description: 'Enim ea sunt ea pariatur elit adipisicing nostrud non. Excepteur veniam fugiat magna exercitation ullamco adipisicing labore.',
+            description: 'Pendiente: Enim ea sunt ea pariatur elit adipisicing nostrud non. Excepteur veniam fugiat magna exercitation ullamco adipisicing labore.',
             status: 'pending',
             createdAt: Date.now(),
         },
         {
             _id: uuidv4(),//usamos la importacion de uuid de arriba linea 5 para usar id unicos
-            description: 'Consectetur proident duis do exercitation culpa aute dolore adipisicing exercitation nulla sit.',
+            description: 'En Progreso: Consectetur proident duis do exercitation culpa aute dolore adipisicing exercitation nulla sit.',
             status: 'in-progress',
             createdAt: Date.now() - 1000000,
         },
         {
             _id: uuidv4(),//usamos la importacion de uuid de arriba linea 5 para usar id unicos
-            description: 'Culpa ea cillum deserunt Lorem sit reprehenderit ullamco aliquip Lorem dolor amet sit quis.',
+            description: 'Terminadas: Culpa ea cillum deserunt Lorem sit reprehenderit ullamco aliquip Lorem dolor amet sit quis.',
             status: 'finished',
             createdAt: Date.now() - 100000,
         },
