@@ -48,12 +48,30 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
     //Entries_INITIAL_STATE, como reducer usamos el reducer creado EntriesReducer
     const [state, dispatch] = useReducer(entriesReducer, Entries_INITIAL_STATE);
 
+    //creamos una funcion para añadir nuevas entradas, recibe una descripcion de tipo string
+    const addNewEntry = ( description: string) => {
+        //creamos un nuevo objeto con la descripcion recibida, de tipo Entry
+        const newEntry: Entry = {
+            _id: uuidv4(), //generamos el id usando la importacion de arriba linea 8
+            description: description,
+            createdAt: Date.now(),
+            status: 'pending'
+        }
+
+        //llamamos al dispatch del reducer
+        dispatch({ type: '[Entry]  Add-Entry', payload: newEntry});
+    }
+
     return (
         //usamos el componente de Contexto(create Context) EntriesContext
         //definimos el value que es lo que se compartira con el resto de componentes
         //el children lo compondran los componentes incluidos en este Provider
         <EntriesContext.Provider value={{
-            ...state
+            ...state,
+
+            //Methods
+            addNewEntry
+            
         }}>
             { children}
         </EntriesContext.Provider>

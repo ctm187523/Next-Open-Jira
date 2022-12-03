@@ -5,6 +5,9 @@ import { Entry } from '../../interfaces/entry';
 //creamos una interfaz para mostrar como luce el contexto
 interface ContextProps {
    entries: Entry[]; //tipamos las entradas con la interfaz ubicada en /interfaces/entry
+
+   //Metodos
+   addNewEntry: (description: string) => void; //añadimos el metodo creado en el entriesReducer
 }
 
 

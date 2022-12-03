@@ -11,11 +11,13 @@ interface Props {
 //y el return 
 export interface UIState {
     sidemenuOpen: boolean;
+    isAddingEntry: boolean;
 }
 
-//usamos la interfaz creada arriba para el estado inicial
+//usamos la interfaz creada arriba para crear un objeto para el  estado inicial
 const UI_INITIAL_STATE: UIState = {
     sidemenuOpen: false,
+    isAddingEntry: false
 }
 
 
@@ -36,6 +38,12 @@ export const UIProvider:FC<Props> = ({ children }) => {
         dispatch( { type: 'UI - Close Sidebar'});
     }
 
+    //funcion para cambiar el estado si el usuario añade una nueva entrada al pulsar el boton de agregar tarea, creado en components/ui/NewEntry
+    //al cambiar el estado de true a false mostramos o no el formulario para añadir una nueva tarea
+    const setIsAddingEntry = ( value: boolean) => {
+        dispatch( { type: 'UI - Set isAddingEntry' , payload: value} )
+    }
+
     return (
         //usamos el componente creado en este mismo directorio UIContext
         //definimos el value que es lo que se compartira con el resto de componentes le pasamos el state y las funciones
@@ -46,7 +54,9 @@ export const UIProvider:FC<Props> = ({ children }) => {
 
            //Methods
            openSideMenu,
-           closeSideMenu
+           closeSideMenu,
+           
+           setIsAddingEntry
        }}>
            { children }
        </UIContext.Provider>

@@ -2,18 +2,27 @@ import { Button, Box, TextField } from '@mui/material'
 //importamos iconos de material UI -> https://mui.com/material-ui/material-icons/?theme=Outlined
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useContext } from 'react';
+import { EntriesContext } from '../../context/entries/EntriesContext';
+import { UIContext } from '../../context/ui/UIContext';
 
 export const NewEntry = () => {
 
-    //usamos el useState para saber si se esta añadiendo una nueva entrada y asi mostrar el formulario o no
-    const [isAdding, setIsAdding] = useState(false);
+   //usamos el useContext para obtener el contexto del UIContext 
+   //desestructuramos para obtener el metodo setIsAddingEntry con el que 
+   //controlaremos si el usuario pulsa el boton de agregar tarea para introducir una
+   //nueva tarea y mostar o no el formulario para la entrada de datos de una nueva tarea
+   //tambien usamos isAddingEntry para saber el estado si esta en false o true
+   const { setIsAddingEntry, isAddingEntry  } = useContext(UIContext);
 
     //usamos el useState para manejar el texto introducido por el usuario para crear nuevas entradas
     const [inputValue, setInputValue] = useState('');
 
     //useState que usamos para cuando pierde el foco el formulario, pulsamos fuera del formulario cambia touched a true
     const [touched, setTouched] = useState(false);
+
+    //usamos el useContext para recibir el contexto de en este caso en EntriesContext.tsx y desestructuramos la funcion addNewEntry
+    const { addNewEntry } = useContext(EntriesContext);
 
     //funcion para manejar las entradas de texto del usuario, recibimos como
     //parametro el event del TextField de abajo lo tipamos como ChangeEvent que pude ser de 
@@ -24,8 +33,15 @@ export const NewEntry = () => {
 
     //funcion para guardar la entrada 
     const onSave = () =>{
-        if( inputValue.length === 0 ) return;
-        console.log( { inputValue})
+        if( inputValue.length === 0 ) return; //si esta vacio salimos del metodo
+
+        addNewEntry(inputValue); //usamos el metodo addNewEntry del contexto del  EntriesContext importado arriba linea 20
+
+        //restablecemos los valores uan vez introducida una nueva entrada
+        setIsAddingEntry( false );
+        setTouched( false );
+        setInputValue(''); //restablecemos el inputValue a un string vacio
+        
     }
 
     return (
@@ -35,7 +51,7 @@ export const NewEntry = () => {
         el formulario en caso contrario no lo muestra*/}
 
             {
-                isAdding ? (
+                isAddingEntry ? (
                     <>
                         {/* agregamos un TextField de Material Ui para que el usuario pueda introducir el texto */}
                         <TextField
@@ -54,7 +70,7 @@ export const NewEntry = () => {
                         <Box display='flex' justifyContent='space-between'>
                             <Button
                                 variant='text'
-                                onClick={() => setIsAdding(false)} //al pulsar cambiamos el valor del useState isAdding creado arriba en false
+                                onClick={() => setIsAddingEntry(false)} //al pulsar cambiamos el valor del useState isAdding creado arriba en false
                             >
                                 Cancelar
                             </Button>
@@ -77,7 +93,7 @@ export const NewEntry = () => {
                             startIcon={<AddCircleOutlineOutlinedIcon />}  //usamos el icono importado arriba para agregarlo al inicio
                             fullWidth
                             variant='outlined'
-                            onClick={() => setIsAdding(true)} //al pulsar cambiamos el valor del useState isAdding creado arriba en true
+                            onClick={() => setIsAddingEntry(true)} //al pulsar cambiamos el valor del useState isAdding creado arriba en true
                         >
                             Agregar tarea
                         </Button>
