@@ -12,12 +12,14 @@ interface Props {
 export interface UIState {
     sidemenuOpen: boolean;
     isAddingEntry: boolean;
+    isDragging: boolean;
 }
 
 //usamos la interfaz creada arriba para crear un objeto para el  estado inicial
 const UI_INITIAL_STATE: UIState = {
     sidemenuOpen: false,
-    isAddingEntry: false
+    isAddingEntry: false,
+    isDragging: false,
 }
 
 
@@ -44,6 +46,16 @@ export const UIProvider:FC<Props> = ({ children }) => {
         dispatch( { type: 'UI - Set isAddingEntry' , payload: value} )
     }
 
+    //funcion para cambiar el estado del Dragging a true, usado en components/ui/EntryCard
+    const startDragging = () => {
+        dispatch({ type:'UI - Start Dragging'})
+    }
+
+    //funcion para cambiar el estado del Dragging a false, usado en components/ui/EntryCard
+    const endDragging = () => {
+        dispatch({ type:'UI - End Dragging'})
+    }
+
     return (
         //usamos el componente creado en este mismo directorio UIContext
         //definimos el value que es lo que se compartira con el resto de componentes le pasamos el state y las funciones
@@ -56,7 +68,10 @@ export const UIProvider:FC<Props> = ({ children }) => {
            openSideMenu,
            closeSideMenu,
            
-           setIsAddingEntry
+           setIsAddingEntry,
+
+           startDragging,
+           endDragging
        }}>
            { children }
        </UIContext.Provider>

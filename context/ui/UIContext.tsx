@@ -4,11 +4,16 @@ import { createContext } from "react";
 interface ContextProps {
     sidemenuOpen: boolean; //esta propiedad controla cuando esta abierto o cerrado el sideBar(Drawer)
     isAddingEntry: boolean; //propiedad para controlar si el usuario a pulsado el boton de agregar tarea y asi mostar el formulario de entrada o no, accion realizada en components/ui/NewEntry.tsx
+    isDragging: boolean; //propiedade del state para saber si isDragging esta en true o false
 
     //Methods
     openSideMenu: () => void;
     closeSideMenu: () => void;
+
     setIsAddingEntry: (value: boolean) => void;
+
+    startDragging: () => void;
+    endDragging: () => void;
 }
 
 //creamos el contexto para crear el provider y poder pasar informacion entre componentes 

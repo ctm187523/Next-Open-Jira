@@ -5,7 +5,9 @@ import { UIState } from './';
 type UIActionType =
     | { type: 'UI - Open Sidebar' }
     | { type: 'UI - Close Sidebar' }
-    | { type: 'UI - Set isAddingEntry' , payload: boolean}
+    | { type: 'UI - Set isAddingEntry', payload: boolean }
+    | { type: 'UI - Start Dragging' }
+    | { type: 'UI - End Dragging' }
 
 
 //el reducer es una funcion pura porque todos sus valores de retorno los obtiene
@@ -26,11 +28,23 @@ export const uiReducer = (state: UIState, action: UIActionType): UIState => {
                 sidemenuOpen: false,
             }
 
-            case 'UI - Set isAddingEntry':
-                return {
-                    ...state,
-                    isAddingEntry: action.payload,
-                }
+        case 'UI - Set isAddingEntry':
+            return {
+                ...state,
+                isAddingEntry: action.payload,
+            }
+
+        case 'UI - Start Dragging':
+            return {
+                ...state,
+                isDragging: true
+            }
+
+        case 'UI - End Dragging':
+            return {
+                ...state,
+                isDragging: false
+            }
 
         default:
             return state;

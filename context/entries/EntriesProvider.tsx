@@ -62,6 +62,11 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
         dispatch({ type: '[Entry]  Add-Entry', payload: newEntry});
     }
 
+    //funcion que al hacer el drag and drop cambia el estatus del objeto al soltarlo en otra lista distinta
+    const updateEntry = ( entry: Entry ) => {
+        dispatch({ type: '[Entry]  Entry_Updated', payload: entry });
+    }
+
     return (
         //usamos el componente de Contexto(create Context) EntriesContext
         //definimos el value que es lo que se compartira con el resto de componentes
@@ -70,8 +75,8 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
             ...state,
 
             //Methods
-            addNewEntry
-            
+            addNewEntry,
+            updateEntry
         }}>
             { children}
         </EntriesContext.Provider>

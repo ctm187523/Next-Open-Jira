@@ -1,9 +1,11 @@
-import { EntriesState} from './';
+import { EntriesState } from './';
 import { Entry } from '../../interfaces/entry';
 
 //definimos las acciones con textos unicos
-type EntriesActionType = 
-| { type: '[Entry]  Add-Entry', payload: Entry } //en el payload recibimos un objeto Entry
+type EntriesActionType =
+   | { type: '[Entry]  Add-Entry', payload: Entry } //en el payload recibimos un objeto Entry
+   | { type: '[Entry]  Entry_Updated', payload: Entry }
+
 
 //el reducer es una funcion pura porque todos sus valores de retorno los obtiene
 //unicamente de los valores que recibe, no tiene ninguna interaccion con el mundo exterior
@@ -13,13 +15,25 @@ type EntriesActionType =
 export const entriesReducer = (state: EntriesState, action: EntriesActionType): EntriesState => {
 
    switch (action.type) {
-        case '[Entry]  Add-Entry':
+      case '[Entry]  Add-Entry':
          return {
-          ...state,
-          entries: [...state.entries, action.payload ] //añadimos a las entradas un nuevo objeto Entry a traves del payload, creamos un nuevo estado no una mutacion usando el spread
-       }
+            ...state,
+            entries: [...state.entries, action.payload] //añadimos a las entradas un nuevo objeto Entry a traves del payload, creamos un nuevo estado no una mutacion usando el spread
+         }
+      //al hacer drag an drop modificamos el estado del objeto al que hemos echo drag and drop y su descripcion
+      case '[Entry]  Entry_Updated':
+         return {
+            ...state,
+            entries: state.entries.map(entry => {
+               if (entry._id === action.payload._id) {
+                  entry.status = action.payload.status;
+                  entry.description = action.payload.description;
+               }
+               return entry; //retornamos la entrada modificada
+            })
+         }
 
-        default:
-           return state;
-    }
+      default:
+         return state;
+   }
 }
