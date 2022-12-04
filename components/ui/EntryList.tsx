@@ -40,7 +40,7 @@ export const EntryList: FC<Props> = ({ status }) => {
         //obtenemos el id del card que esta haciendo el drag, ver metodo onDragStart de Entry.Card.tsx
         const id = event.dataTransfer.getData('text');
         
-        //usamos el metedo find del array entries para ver si tenemos algun elemento con el id 
+        //usamos el metodo find del array entries para ver si tenemos algun elemento con el id 
         //de la linea de codigo de arriba que es el componente con el que hemos echo el drop
         //el signo de admiracion del final indica que siempre encontraremos un componente que coincida
         const entry = entries.find( e => e._id === id)!;
@@ -75,3 +75,4 @@ export const EntryList: FC<Props> = ({ status }) => {
         </div>
     )
 }
+
