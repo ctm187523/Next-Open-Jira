@@ -22,7 +22,7 @@ export default  async function handler(req: NextApiRequest,res: NextApiResponse<
   //importamos el Entry de models/Entry
   await Entry.deleteMany(); //borramos todo lo de la base ded datos que se encuentre en la coleccion de entradas
   await Entry.insertMany( seedData.entries ); //insertamos desde el archivo database/seed-data los entries
-
+  
   await db.disconnect(); //nos desconectamos al finalizar el trabajo
 
   res.status(200).json({ message: 'Proceso realizado correctamente' })

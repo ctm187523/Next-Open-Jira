@@ -3,7 +3,7 @@ import { Entry } from '../interfaces/entry';
 
 //definimos la interfaz que sera para tipar el Model(linea 27), hacemos que
 //herede de la ya interfaz creada en interfaces/entry
-interface IEntry extends Entry{}
+export interface IEntry extends Entry{}
 
 //definimos el esquema de las entradas
 const entrySchema = new Schema({

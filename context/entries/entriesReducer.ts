@@ -5,6 +5,7 @@ import { Entry } from '../../interfaces/entry';
 type EntriesActionType =
    | { type: '[Entry]  Add-Entry', payload: Entry } //en el payload recibimos un objeto Entry
    | { type: '[Entry]  Entry_Updated', payload: Entry }
+   | { type: '[Entry]  Refresh_Data', payload: Entry[] } //type para cargar la informacion de la base de datos
 
 
 //el reducer es una funcion pura porque todos sus valores de retorno los obtiene
@@ -32,6 +33,11 @@ export const entriesReducer = (state: EntriesState, action: EntriesActionType): 
                return entry; //retornamos la entrada modificada
             })
          }
+         case '[Entry]  Refresh_Data':
+            return {
+               ...state,
+               entries: [ ...action.payload ]
+            }
 
       default:
          return state;

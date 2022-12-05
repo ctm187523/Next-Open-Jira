@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <CssBaseline />
           <Component {...pageProps} />
         </ThemeProvider>
-      </UIProvider>
+      </UIProvider> 
     </EntriesProvider>
   )
 }

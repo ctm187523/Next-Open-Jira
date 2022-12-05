@@ -1,4 +1,4 @@
-import { FC, useReducer, ReactElement } from 'react';
+import { FC, useReducer, ReactElement, useEffect } from 'react';
 import { EntriesContext, entriesReducer } from './'
 import { Entry } from '../../interfaces/entry';
 
@@ -6,6 +6,7 @@ import { Entry } from '../../interfaces/entry';
 //ademas he importado para que trabaje con typeScript --> yarn add -D @types/uuid
 //abajo la importacion una vez instado con los dos comandos anteriores
 import { v4 as uuidv4 } from 'uuid';
+import entriesAPi from '../../apis/entriesApi';
 
 //creamos la interfaz para las props del componente
 interface Props {
@@ -50,6 +51,21 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
         dispatch({ type: '[Entry]  Entry_Updated', payload: entry });
     }
 
+    //funcion para cargar los archivos de la base de datos, solo una vez al cargar la aplicacion
+    const refreshEntries = async() => {
+        //hacemos la peticion usando el archivo creado en apis/entriesAPI donde hemos importado axios para las peticiones
+        //hacemos un get a pages/api/entries/index.ts para la peticion, desestructuramos y obtenemos la data
+        //tipamos el get con la interfaz interfaces/entry como un arreglo usamos la interfaz ya que estamos en el frontend, no el Entry de los modelos que es para Moongose en el backend
+        const { data } = await entriesAPi.get<Entry[]>('/entries');
+        //hacemos el dispatch al entriesReducer
+        dispatch({ type: '[Entry]  Refresh_Data', payload: data});
+    }
+
+    //usamos un useEffect para la carga de archivos de la base de datos
+    useEffect(() => {
+        refreshEntries(); //llamamos a la funcion creada arriba
+    }, []);
+
     return (
         //usamos el componente de Contexto(create Context) EntriesContext
         //definimos el value que es lo que se compartira con el resto de componentes
@@ -59,7 +75,7 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
 
             //Methods
             addNewEntry,
-            updateEntry
+            updateEntry,
         }}>
             { children}
         </EntriesContext.Provider>
