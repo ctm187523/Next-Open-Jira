@@ -48,15 +48,23 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
         //en el primer argumento mandamos la ruta a hacer el POST pages/api/entries/index.ts y el segundo arguemnto
         //es el body del POST que seria la descripcion recibida por parametro para crear una nueva entrada
         const { data } = await entriesAPi.post<Entry>('/entries' , { description: description} );
-        console.log({ data })
 
         //llamamos al dispatch del reducer, le pasamos la data recibida de la peticion post
         dispatch({ type: '[Entry]  Add-Entry', payload: data });
     }
 
     //funcion que al hacer el drag and drop cambia el estatus del objeto al soltarlo en otra lista distinta
-    const updateEntry = ( entry: Entry ) => {
-        dispatch({ type: '[Entry]  Entry_Updated', payload: entry });
+    const updateEntry = async( entry: Entry ) => {
+
+        try {
+            //para hacer el update usamos el archivo pages/api/entries/[id].ts, que es una pagina dinamica
+            //donde recibe el id que pasamos en el put como extension de la url, como segundo parametro pasamos toda la entrada
+            const { data } = await entriesAPi.put<Entry>(`/entries/${ entry._id }`, entry );
+            dispatch({ type: '[Entry]  Entry_Updated', payload: entry });
+        } catch (error) {
+            console.log({ error });
+        }
+        
     }
 
     //funcion para cargar los archivos de la base de datos, solo una vez al cargar la aplicacion

@@ -20,6 +20,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
         case 'POST':
             return postEntry( req, res); //metodo llamado al hacer post tenemos el parametro req y res, el req(request) para recibir el body de la peticion y del body obtenemos la data, res(responso) es la respuesta que proporcionamos al cliente
 
+        case 'PUT':
+            return postEntry( req, res); //metodo para hacer update de una entrada
+
         //si hacemos una peticion distinta de GET muestra un error
         default:
             return res.status(400).json({ message: 'Endpoint no existe' });
