@@ -10,7 +10,7 @@ export const NewEntry = () => {
 
    //usamos el useContext para obtener el contexto del UIContext 
    //desestructuramos para obtener el metodo setIsAddingEntry con el que 
-   //controlaremos si el usuario pulsa el boton de agregar tarea para introducir una
+   //controlaremos si el usuario pulsa el botón de agregar tarea para introducir una
    //nueva tarea y mostar o no el formulario para la entrada de datos de una nueva tarea
    //tambien usamos isAddingEntry para saber el estado si esta en false o true
    const { setIsAddingEntry, isAddingEntry  } = useContext(UIContext);

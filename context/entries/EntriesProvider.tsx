@@ -33,17 +33,25 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
     const [state, dispatch] = useReducer(entriesReducer, Entries_INITIAL_STATE);
 
     //creamos una funcion para añadir nuevas entradas, recibe una descripcion de tipo string
-    const addNewEntry = ( description: string) => {
+    const addNewEntry = async( description: string) => {
         //creamos un nuevo objeto con la descripcion recibida, de tipo Entry
-        const newEntry: Entry = {
-            _id: uuidv4(), //generamos el id usando la importacion de arriba linea 8
-            description: description,
-            createdAt: Date.now(),
-            status: 'pending'
-        }
+        //lo comentamos es como lo haciamos antes de implementar los endpoints, no se guardaba en la base de datos
+        // const newEntry: Entry = {
+        //     _id: uuidv4(), //generamos el id usando la importacion de arriba linea 8
+        //     description: description,
+        //     createdAt: Date.now(),
+        //     status: 'pending'
+        // }
 
-        //llamamos al dispatch del reducer
-        dispatch({ type: '[Entry]  Add-Entry', payload: newEntry});
+        //creamos la peticion post con entriesApi(axios) hacia pages/api/entries/index.ts como haciamos con postman
+        //el post esta tipado comn el Entry de las interfaces interfaces/entry
+        //en el primer argumento mandamos la ruta a hacer el POST pages/api/entries/index.ts y el segundo arguemnto
+        //es el body del POST que seria la descripcion recibida por parametro para crear una nueva entrada
+        const { data } = await entriesAPi.post<Entry>('/entries' , { description: description} );
+        console.log({ data })
+
+        //llamamos al dispatch del reducer, le pasamos la data recibida de la peticion post
+        dispatch({ type: '[Entry]  Add-Entry', payload: data });
     }
 
     //funcion que al hacer el drag and drop cambia el estatus del objeto al soltarlo en otra lista distinta
