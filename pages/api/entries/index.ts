@@ -27,7 +27,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
         default:
             return res.status(400).json({ message: 'Endpoint no existe' });
     }
-}
+} 
 
 //metodo que hace una peticion a la base de datos
 const getEntries = async (res: NextApiResponse<Data>) => {

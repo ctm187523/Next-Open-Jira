@@ -44,8 +44,8 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
         // }
 
         //creamos la peticion post con entriesApi(axios) hacia pages/api/entries/index.ts como haciamos con postman
-        //el post esta tipado comn el Entry de las interfaces interfaces/entry
-        //en el primer argumento mandamos la ruta a hacer el POST pages/api/entries/index.ts y el segundo arguemnto
+        //el post esta tipado con el Entry de las interfaces interfaces/entry
+        //en el primer argumento mandamos la ruta a hacer el POST pages/api/entries/index.ts y el segundo argumento
         //es el body del POST que seria la descripcion recibida por parametro para crear una nueva entrada
         const { data } = await entriesAPi.post<Entry>('/entries' , { description: description} );
 
