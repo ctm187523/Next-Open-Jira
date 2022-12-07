@@ -3,9 +3,10 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 import mongoose from 'mongoose';
-import { db } from '../../../database';
-import { Entry } from '../../../models';
-import { IEntry } from '../../../models/Entry';
+import { db } from '../../../../database';
+import { Entry } from '../../../../models';
+import { IEntry } from '../../../../models/Entry';
+
 
 
 
@@ -21,7 +22,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     //preguntamos si el id recibido es un objeto valido de moongose, si no lo es
     //por eso ponemos el signo de admiracion al principio, retornamos un mensaje de error y sale del metodo
     if (!mongoose.isValidObjectId(id)) {
-        return res.status(400).json({ message: 'El id no es valido' + id });
+        return res.status(400).json({ message: 'El id no es valido ' + id });
     }
 
     //hacemos un swith dependiendo del metodo(GET,POST,ETC) que ha echo la peticion
@@ -29,8 +30,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
         case 'PUT':
             return updateEntry(req, res); //si es un PUT llamamos a la funcion para modificar la entrada
 
+        case 'GET':
+            return getEntry(req, res); //peticion get de un objeto en concreto por id
+
         default:
-            return res.status(400).json({ message: 'Método no existe' });
+            return res.status(400).json({ message: 'Método ' + req.method + ' no existe ' });
     }
 
 }
@@ -82,6 +86,33 @@ const updateEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
         await db.disconnect();
         res.status(400).json({ message: error.errors.status.message });
     }
+
+}
+
+//muestra un objeto unico por id de la base de datos
+const getEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+
+    const { id } = req.query; //con req.query obtenemos el id de la url
+
+    //conectamos a la base de datos
+    await db.connect();
+
+    //usamos Entry del modelo y comprobamos si existe un objeto en la base de datos con el id especificado
+    const entryInDb = await Entry.findById(id);
+
+    //desconectamos a la base de datos
+    await db.disconnect();
+
+     //si la entrada no se encuentra retornamos un mensaje de error y salimos
+     if (!entryInDb) {
+        await db.disconnect();
+        return res.status(400).json({ message: 'No hay entrada con ese ID ' + id });
+    }
+
+    //mostramos el objeto encontrado
+    res.status(200).json( entryInDb );
+
+    
 
 }
 
