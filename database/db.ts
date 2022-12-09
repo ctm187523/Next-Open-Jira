@@ -10,13 +10,13 @@ import mongoose from 'mongoose';
  *  3 = disconnecting
  */
 
-const mongooConnection = {
+const mongoConnection = {
     isConnected: 0
 }
 
 export const connect = async () => {
 
-    if (mongooConnection.isConnected) { //es decir vale 1
+    if (mongoConnection.isConnected) { //es decir vale 1
         console.log('Ya estabamos conectados');
         return;
     }
@@ -25,10 +25,10 @@ export const connect = async () => {
     //que no haya ninguna conexion adicional(connectios > 0), si hay alguna conexion
     //usamos esa conexion, conocemos su estado con readyState
     if (mongoose.connections.length > 0) {
-        mongooConnection.isConnected = mongoose.connections[0].readyState;
+        mongoConnection.isConnected = mongoose.connections[0].readyState;
 
         //si es estado(readyState es 1 nos conectamos)
-        if (mongooConnection.isConnected === 1) {
+        if (mongoConnection.isConnected === 1) {
             console.log('Usando conexión anterior');
             return;
         }
@@ -39,7 +39,7 @@ export const connect = async () => {
 
     //creamos una nueva conexion ya que nos habiamos anteriormente desconectado
     await mongoose.connect(process.env.MONGO_URL || ''); //usamos el archivo .env con las varaibles de entorno
-    mongooConnection.isConnected = 1;
+    mongoConnection.isConnected = 1;
     console.log('Conectado a MongoDB', process.env.MONGO_URL);
 }
 
@@ -48,8 +48,10 @@ export const disconnect = async () => {
 
     if ( process.env.NODE_ENV === 'development') return; // si esta en desarrollo sale de al funcion
     
-    if (mongooConnection.isConnected === 0) return; //si es igual a cero sale de la funcion porque ya esta desconectado
+    if (mongoConnection.isConnected === 0) return; //si es igual a cero sale de la funcion porque ya esta desconectad
     
     await mongoose.disconnect();
+    mongoConnection.isConnected = 0;
+
     console.log('Desconectado de MongoDb');
 }

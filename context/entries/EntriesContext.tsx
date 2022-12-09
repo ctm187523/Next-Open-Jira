@@ -8,7 +8,7 @@ interface ContextProps {
 
    //Metodos
    addNewEntry: (description: string) => void; //añadimos el metodo creado en el entriesReducer
-   updateEntry: (entry: Entry) => void; //metodo para modificar el stauts del objeto al hacer drag and drop y modificarlo de la lista en que se encontraba
+   updateEntry: (entry: Entry, showSnackbar?:boolean ) => void; //metodo para modificar el stauts del objeto al hacer drag and drop y modificarlo de la lista en que se encontraba
 }
 
 

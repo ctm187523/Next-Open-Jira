@@ -2,6 +2,10 @@ import { Card, CardActionArea, CardActions, CardContent, Typography } from "@mui
 import { FC, DragEvent, useContext } from 'react';
 import { Entry } from '../../interfaces/entry';
 import { UIContext } from '../../context/ui/UIContext';
+import { useRouter } from "next/router";
+import { dateFunctions } from '../../utils';
+import { getFormatDistanceToNow } from '../../utils/dateFunctions';
+
 
 interface Props {
     entry: Entry;
@@ -11,7 +15,10 @@ export const EntryCard:FC<Props> = ({ entry }) => {
 
     //importamos el useContext de React para usar el UIContext y desestructurar
     //el startDragging y el endDragging
-    const { startDragging, endDragging } = useContext(UIContext)
+    const { startDragging, endDragging } = useContext(UIContext);
+
+    //importamos el useRouter para poder navegar
+    const router = useRouter();
 
     //usamos un que recibe el evento de los atributos del Card creado abajo
     //es de tipo DragEvent 
@@ -28,9 +35,15 @@ export const EntryCard:FC<Props> = ({ entry }) => {
         endDragging();
     }
 
+    const onClick = () => {
+        //usamos el useRouter importado arriba para acceder a pages/enties/[id].tsx el id lo recibimos de las props del componente
+        router.push(`/entries/${ entry._id}`);
+    }
+
 
     return (
         <Card
+            onClick={ onClick } //llamamos a la funcion creada arriba
             sx={{ marginBottom: 1}}
             //Eventos de drag
             draggable //con esta propiedad hacemos que el componente sea draggable, se pueda coger y deslizar por la pantalla
@@ -45,7 +58,8 @@ export const EntryCard:FC<Props> = ({ entry }) => {
                 </CardContent>
                 {/* con display: 'flex' y justifyContent: 'end' hacemos que el componete typography se situe al final */}
                 <CardActions sx={{ display: 'flex', justifyContent: 'end', paddingRight: 2}}>
-                    <Typography variant='body2'>hace 30 minutos </Typography>
+                    {/* usamos la funcion getFormatDistanceToNow de utils/dateFunctions para manejar las fechas */}
+                    <Typography variant='body2'> { dateFunctions.getFormatDistanceToNow( entry.createdAt ) } </Typography>
                 </CardActions>
             </CardActionArea>
         </Card>
