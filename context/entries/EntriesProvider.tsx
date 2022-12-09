@@ -63,7 +63,7 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
     //recibe un entry que desestructuramos y la variable showSnackBar para mostra el snackbar al modificarse los
     //datos de la entrada por defecto esta en false porque no queremos que al hacer drag and drop salga el snackbar solo
     //al actualizar una entrada, en EntriesContext en el uodateEntry esta incluido los dos parametros de entrada
-    const updateEntry = async ({ _id, description, status }: Entry, showSnackbar = false ) => {
+    const updateEntry = async ({ _id, description, status }: Entry, showSnackbar = false) => {
 
         try {
             //para hacer el update usamos el archivo pages/api/entries/[id].ts, que es una pagina dinamica
@@ -83,6 +83,32 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
                     }
                 })
             }
+
+        } catch (error) {
+            console.log({ error });
+        }
+
+    }
+
+    const deleteEntry = async (entry: Entry) => {
+
+        try {
+
+            //llamamos al endpoint de pages/entries/id
+            await entriesAPi.delete<Entry>(`/entries/${entry._id}`);
+
+            //llamamos a la funcion type: '[Entry]  Delete-Entry' con el useContext mediante en dispatch
+            dispatch({ type: '[Entry]  Delete-Entry', payload: entry });
+
+            //mostramos el snackbar para indicar que la entrada ha sido actualizada, usamos el metodo del hook implementado arriba useSnackBar
+            enqueueSnackbar('Entrada borrada', {
+                variant: 'warning',
+                autoHideDuration: 1500,
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right'
+                }
+            })
 
         } catch (error) {
             console.log({ error });
@@ -114,7 +140,8 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
 
             //Methods
             addNewEntry,
-            updateEntry
+            updateEntry,
+            deleteEntry
         }}>
             { children}
         </EntriesContext.Provider>

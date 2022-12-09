@@ -15,7 +15,7 @@ import { dbEntries } from "../../database";
 import { Entry } from '../../interfaces/entry';
 import { EntriesContext } from '../../context/entries/EntriesContext';
 import { dateFunctions } from "../../utils";
-import { getFormatDistanceToNow } from '../../utils/dateFunctions';
+
 
 
 //creamos una constante para los diferentes RadioButtons creados abajo
@@ -35,7 +35,7 @@ export const EntryPage: FC<Props> = ( { entry }) => {
     const [touched, setTouched] = useState(false);
 
     //usamos el useContext para recibir los metodos de EntriesContext
-    const { updateEntry } = useContext(EntriesContext);
+    const { updateEntry, deleteEntry} = useContext(EntriesContext);
 
     //usamos el useMemo para usarlo en las validaciones de los forumularios, la condicion es que
     //si el inputValue es menor y igual a cero y touched esta en true la variable isNotValid sera true
@@ -72,6 +72,10 @@ export const EntryPage: FC<Props> = ( { entry }) => {
         updateEntry(updatedEntry, true);
     }
 
+    const onDelete = () => {
+        
+        deleteEntry( entry );
+    }
     return (
         // para el titulo usamos una parte de la descripcion usando substring
         <Layout title={ inputValue.substring(0,20) + '...' }>
@@ -142,11 +146,12 @@ export const EntryPage: FC<Props> = ( { entry }) => {
             </Grid>
 
             <IconButton
+                onClick={ onDelete }
                 sx={{
                     position: 'fixed',
                     bottom: 30,
                     right: 30,
-                    backgroundColor: 'error.dark'
+                    backgroundColor: 'error.dark',
                 }}
             >
                 <DeleteOutlineOutlinedIcon />

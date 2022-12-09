@@ -45,7 +45,7 @@ export const EntryList: FC<Props> = ({ status }) => {
         //el signo de admiracion del final indica que siempre encontraremos un componente que coincida
         const entry = entries.find( e => e._id === id)!;
         entry.status = status; //modificamos el status del componente
-        updateEntry( entry ); //usamos la funcio obtenida del contexto de EntriesContent
+        updateEntry( entry ); //usamos la funcion obtenida del contexto de EntriesContent
         endDragging(); //usamos la funcion endDraggind el contexto del UIContext
 
     }

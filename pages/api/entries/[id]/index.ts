@@ -33,6 +33,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
         case 'GET':
             return getEntry(req, res); //peticion get de un objeto en concreto por id
 
+        case 'DELETE':
+            return deleteEntry(req, res)
+
         default:
             return res.status(400).json({ message: 'Método ' + req.method + ' no existe ' });
     }
@@ -61,6 +64,8 @@ const updateEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     //usamos la que la va actualizar en caso contrario usamos la que ya lleva el objeto, para el status
     //lo mismo lo cambiamos si venimos de hacer drag and drop en caso contrario si no hay que modifcarlo usamos
     //el status que viene por defecto
+    //aqui decimos que use la description que viene del req.body que son los datos actualizados
+    //en caso de que no venga usamos la que ya tiene el objeto entryToUpdate.descrioption
     const { description = entryToUpdate.description,
         status = entryToUpdate.status, } = req.body;
 
@@ -103,16 +108,33 @@ const getEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     //desconectamos a la base de datos
     await db.disconnect();
 
-     //si la entrada no se encuentra retornamos un mensaje de error y salimos
-     if (!entryInDb) {
+    //si la entrada no se encuentra retornamos un mensaje de error y salimos
+    if (!entryInDb) {
         await db.disconnect();
         return res.status(400).json({ message: 'No hay entrada con ese ID ' + id });
     }
 
     //mostramos el objeto encontrado
-    res.status(200).json( entryInDb );
+    res.status(200).json(entryInDb);
 
+
+
+}
+
+const deleteEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+
+    const { id } = req.query; //con req.query obtenemos el id de la url
+
+    await db.connect();
+    const deleteEntry = await Entry.findByIdAndDelete(id);
+    await db.disconnect(); 
+
+     //si la entrada no se encuentra retornamos un mensaje de error y salimos
+     if (!deleteEntry) {
+        await db.disconnect();
+        return res.status(400).json({ message: 'No hay entrada con ese ID ' + id });
+    }
     
-
+    res.status(200).json( { message: 'borrado'});
 }
 

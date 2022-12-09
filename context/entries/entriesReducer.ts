@@ -1,11 +1,14 @@
 import { EntriesState } from './';
 import { Entry } from '../../interfaces/entry';
+import { PlaylistAddOutlined } from '@mui/icons-material';
 
 //definimos las acciones con textos unicos
 type EntriesActionType =
    | { type: '[Entry]  Add-Entry', payload: Entry } //en el payload recibimos un objeto Entry
    | { type: '[Entry]  Entry_Updated', payload: Entry }
    | { type: '[Entry]  Refresh_Data', payload: Entry[] } //type para cargar la informacion de la base de datos
+   | { type: '[Entry]  Delete-Entry', payload: Entry } //type para borrar una entrada
+
 
 
 //el reducer es una funcion pura porque todos sus valores de retorno los obtiene
@@ -38,7 +41,13 @@ export const entriesReducer = (state: EntriesState, action: EntriesActionType): 
                ...state,
                entries: [ ...action.payload ]
             }
-
+         
+         case '[Entry]  Delete-Entry':
+            return {
+               ...state,
+               entries: state.entries.filter(( item ) => item._id !== action.payload._id)
+            }
+         
       default:
          return state;
    }
